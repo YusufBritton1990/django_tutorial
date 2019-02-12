@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User #user created on blog
 
 # Models are used to create databases
 class Post(models.Model):
@@ -23,3 +23,8 @@ class Post(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # dunder (double underscore method)
+    # When the object is called from Post.objects.all(), it will show the title rather than the default "Post object"
+    def __str__(self):
+        return self.title

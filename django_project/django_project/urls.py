@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from users import views as user_views #import view directly into project
 
 # Upon opening the app, it will try to run either admin or blog.
 #If the URL contains blog (User typing in the site), it will run include (root folder) than look for blog
@@ -24,5 +25,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register/', user_views.register, name='register'),
     path('', include('blog.urls')),
 ]

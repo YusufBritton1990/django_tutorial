@@ -1,4 +1,5 @@
 from django.shortcuts import render #This directs to <root>/templates
+from .models import Post #the dot means the file is in the current folder
 
 posts = [
     {
@@ -20,7 +21,7 @@ posts = [
 #view.home ran from urls.py in blog folder.
 def home(request):
     context = {
-        'posts': posts
+        'posts': Post.objects.all()
     }
     # context variable is accessing posts dictionary
     return render(request, 'blog/home.html', context)

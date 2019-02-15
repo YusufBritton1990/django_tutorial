@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
@@ -6,7 +6,6 @@ from django.contrib import messages
 def register(request):
     """
     UserCreationForm: creates a form for users to input information
-
 
     register.html
 
@@ -19,11 +18,22 @@ def register(request):
     form variable will create form. using "as_p" method will add p tags, making
     the page look more presentable
 
+    #request is the HTTP request that passes information
+    #clean_data converts form into a python form
+    #name given in blog>urls.py
     """
-    if request.method == "POST":
+    if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             username = form.clean_data.get('username')
-
-    form = UserCreationForm()
+            messages.success(request, f'Account created for {username}!')
+            return redirect('blog-home')
+    else:
+        form = UserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+
+# message.debug
+# message.info
+# message.success
+# message.warning
+# message.error

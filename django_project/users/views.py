@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from .forms import UserRegisterForm
 
 
 def register(request):
@@ -23,14 +23,14 @@ def register(request):
     #name given in blog>urls.py
     """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST) #This POST method is the username and two passwords
+        form = UserRegisterForm(request.POST) #This POST method is the username and two passwords
         if form.is_valid():
             form.save() #saves the form
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
             return redirect('blog-home')
     else:
-        form = UserCreationForm()
+        form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
 # message.debug

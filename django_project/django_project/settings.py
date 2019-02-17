@@ -122,4 +122,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# By default, crispy_forms is in bootstrap2, setting it to 4
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# When Users login, it will redirect them to the home page
+# (defined in django_project/urls.py)
+LOGIN_REDIRECT_URL = 'blog-home'

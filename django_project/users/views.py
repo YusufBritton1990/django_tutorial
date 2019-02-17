@@ -23,9 +23,10 @@ def register(request):
     #name given in blog>urls.py
     """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreationForm(request.POST) #This POST method is the username and two passwords
         if form.is_valid():
-            username = form.clean_data.get('username')
+            form.save() #saves the form
+            username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
             return redirect('blog-home')
     else:

@@ -23,6 +23,7 @@ from users import views as user_views #import view directly into project
 #run urls
 
 #Once a user type it blog, it will screch in blog>urls for futher processing
+# For logout path, if no template_name is set, it will default to using django's admin page
 
 urlpatterns = [
     path('admin/', admin.site.urls),

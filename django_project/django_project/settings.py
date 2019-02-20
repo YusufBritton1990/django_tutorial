@@ -128,3 +128,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # When Users login, it will redirect them to the home page
 # (defined in django_project/urls.py)
 LOGIN_REDIRECT_URL = 'blog-home'
+
+# If user attempts to view the profile link without login, they will be
+# redirect to login, based on login_required decorator in user>urls.py
+LOGIN_URL = 'login'

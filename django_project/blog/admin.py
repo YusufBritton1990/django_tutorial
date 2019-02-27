@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post #whenever you are making models, need to register here
 
-# adds posts to admin page
+# adds posts section into admin page
 admin.site.register(Post)

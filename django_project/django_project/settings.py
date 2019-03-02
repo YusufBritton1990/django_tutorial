@@ -122,6 +122,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Path where media will be saved. os.path.join will create the correct path
+ # according to your os . BASE_DIR is a variable django created to find the
+ # path (IE C:\Users\Youth\Desktop\Django\django_tutorial\)
+ # to our directory. media is point to a media repo.
+ # So, this path is C:\Users\Youth\Desktop\Django\django_tutorial\media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
 # By default, crispy_forms is in bootstrap2, setting it to 4
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

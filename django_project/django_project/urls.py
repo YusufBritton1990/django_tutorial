@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views #Will be able to use standard, bootstrap login views
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from users import views as user_views #import view directly into project
+
 
 # Upon opening the app, it will try to run either admin or blog.
 #If the URL contains blog (User typing in the site), it will run include (root folder) than look for blog
@@ -33,3 +36,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('', include('blog.urls')),
 ]
+
+# Only adding in debug mode
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

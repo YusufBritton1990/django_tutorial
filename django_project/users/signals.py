@@ -7,15 +7,15 @@ from .models import Profile #when we make a user, make a profile
 def create_profile(sender, instance, created, **kwargs):
     """
     receiver decorater:
-        post_save: once the information is posted
+        post_save: a signal. once a user is saved, create_profile gets User info
         sender: this will be the user informaion
         This decorater is passed in with create_profile
 
     Imports:
         All: defined when passed with receiver decorater, implecitly
         sender: passed with receiver
-        instance:
-        created:
+        instance: once the user exist. passed in from @receiver
+        created: if user is created, make a profile to match. from @receiver
         kwargs:
     """
     if created:
@@ -32,7 +32,7 @@ def save_profile(sender, instance, **kwargs):
     Imports:
         All: defined when passed with receiver decorater, implecitly
         sender: passed with receiver
-        instance:
+        instance: will update profile
         kwargs:
     """
     instance.profile.save()

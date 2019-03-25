@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -42,7 +42,29 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    """
+    decorator:
+        login_required: only display this page when successfully logged in.
+        if unsuccessful, will redirect based on project settings
+    args:
+        request: HTTP request for this page
+
+    input:
+        u_form: User form, defined in forms. grants user access to update username and email from the front end
+        p_form: Profile form, defined in forms. grants user access to update profile picture
+
+    output:
+        renders profile html with picture, and forms to update picture, username, and email
+    """
+    u_form = UserUpdateForm()
+    p_form = ProfileUpdateForm()
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'users/profile.html', context)
 
 # message.debug
 # message.info

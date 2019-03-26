@@ -50,19 +50,52 @@ def profile(request):
         request: HTTP request for this page
 
     input:
-        u_form: User form, defined in forms. grants user access to update username and email from the front end
-        p_form: Profile form, defined in forms. grants user access to update profile picture
+        if request.method == 'POST': checking to see if information is posted
+
+            u_form: User form, defined in forms. grants user access to update
+            username and email from the front end
+
+                request.POST: This will post the information
+
+                instance=request.user: This will show the current user in the
+                form. This will show the email and username
+
+            p_form: Profile form, defined in forms. grants user access to
+            update profile picture
+
+                request.POST: This will post the information
+
+                request.FILES: This is the image itself
+
+                instance=request.user: This will show the current user in the
+                form. This will show the profile picture name
+        else:
+            Default information, awaiting to have data posted
+
 
     output:
-        renders profile html with picture, and forms to update picture, username, and email
+        renders profile html with picture, and forms to update picture,
+        username, and email. Once updated, it will redirect to profile page
     """
-    u_form = UserUpdateForm()
-    p_form = ProfileUpdateForm()
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES,
+        instance=request.user.profile)
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save() #saves the form
+            p_form.save()
+            messages.success(request, f'Your account has been Updated! ')
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
 
     context = {
         'u_form': u_form,
         'p_form': p_form
     }
+
 
     return render(request, 'users/profile.html', context)
 

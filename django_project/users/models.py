@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from PIL import Image
 
 class Profile(models.Model):
     """
@@ -14,9 +15,32 @@ class Profile(models.Model):
 
     __str__ : Dunder (double underscore) method. used to initiate something
         f' : f string. This will dynamically display, in this case, the username
+
+    save: Note: this is overwriting the original save method. We are doing this
+    to have the ability to resize images
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
     def __str__(self):
         return f'{self.user.username} Profile'
+
+    def save(self):
+        """
+        args:
+            self: class self parameter, targets the data
+        input:
+            super().save(): uses the save global variable, which save data into
+            the database
+            img: store the instance of the image path
+        output:
+            edited save function for profile pics that will resize big images
+        """
+        super().save()
+
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)

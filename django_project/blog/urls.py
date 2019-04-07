@@ -1,5 +1,8 @@
 from django.urls import path
-from .views import PostListView, PostDetailView
+from .views import (PostListView,
+    PostDetailView,
+    PostCreateView
+    )
 from . import views #. is for the current directory
 
 """
@@ -12,12 +15,22 @@ NOTE: views.home replaced with PostDetailView.as_view, which is showing
 Post
 
 blog-home: using PostDetailView class, this page contains the post
-post-detail: based on information
+
+post-detail: based on the clicked post. it will only show information
+on that individual post
+    # NOTE: Once clicked, any reference in the template page itself will
+    be referenced as "object". Also, the path to the template is
+    <app>/<model>_<viewtype>.html, example: blog/post/1/.html
+
+post-create: Generate a new field
+    convention: <app>/<model>_<form>.html, example: blog/post/1/.html
+
 blog-about: routes to about page using views.about function
 """
 urlpatterns = [
     path('', PostListView.as_view(), name='blog-home'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('about/', views.about, name='blog-about'),
 ]
 

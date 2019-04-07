@@ -1,5 +1,7 @@
 from django.shortcuts import render #This directs to <root>/templates
-from django.views.generic import ListView, DetailView
+from django.views.generic import (ListView,
+    DetailView,
+    CreateView)
 from .models import Post #the dot means the file is in the current folder
 
 #view.home ran from urls.py in blog folder.
@@ -49,6 +51,20 @@ class PostDetailView(DetailView):
         template post_detail.html which is dynamically populating the post
     """
     model = Post
+
+class PostCreateView(CreateView):
+    """
+    arg:
+        CreateView: inherted from django.
+    input:
+        model: This is accessing the post data
+        fields: fields that user will complete for post
+
+    output:
+        Generate a new post
+    """
+    model = Post
+    fields = ['title', 'content']
 
 
 def about(request):

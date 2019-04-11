@@ -60,11 +60,29 @@ class PostCreateView(CreateView):
         model: This is accessing the post data
         fields: fields that user will complete for post
 
+        form_valid(): This is used to overide the author, which is currently blank
     output:
         Generate a new post
     """
     model = Post
     fields = ['title', 'content']
+
+    def form_valid(self, form):
+        """
+        args:
+            self: This will add to class
+            form: This is altering the form
+
+        input:
+            form.instance.author: The instance the form is created, it will make author equal the author, which is passed in with the HTTP Post request (current logged in user)
+
+        output:
+            this will override the form_valid() that is in super, which will now have the author set to the current logged in user
+
+        """
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
 
 
 def about(request):

@@ -1,7 +1,9 @@
 from django.shortcuts import render #This directs to <root>/templates
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (ListView,
     DetailView,
-    CreateView)
+    CreateView,
+    UpdateView)
 from .models import Post #the dot means the file is in the current folder
 
 #view.home ran from urls.py in blog folder.
@@ -52,9 +54,10 @@ class PostDetailView(DetailView):
     """
     model = Post
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     """
     arg:
+        LoginRequiredMixin: This will require a user to be logged in to be able to make a post. If a user isn't logged it, the page will redirect to login page
         CreateView: inherted from django.
     input:
         model: This is accessing the post data
@@ -83,7 +86,50 @@ class PostCreateView(CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """
+    arg:
+        LoginRequiredMixin: This will require a user to be logged in to be able to make a post. If a user isn't logged it, the page will redirect to login page
+        UserPassesTestMixin: This will allow only the logged in user to edit their post.
+        CreateView: inherted from django.
+    input:
+        model: This is accessing the post data
+        fields: fields that user will complete for post
 
+        form_valid(): This is used to overide the author, which is currently blank
+    output:
+        Generate a new post
+    """
+    model = Post
+    fields = ['title', 'content']
+
+    def form_valid(self, form):
+        """
+        args:
+            self: This will add to class
+            form: This is altering the form
+
+        input:
+            form.instance.author: The instance the form is created, it will make author equal the author, which is passed in with the HTTP Post request (current logged in user)
+
+        output:
+            this will override the form_valid() that is in super, which will now have the author set to the current logged in user
+
+        """
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        """
+        input:
+            get_object(): This is selecting the post we are updating
+
+        output:
+        """
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 def about(request):
     return render(request, 'blog/about.html', {'title':'about'})

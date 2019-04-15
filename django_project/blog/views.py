@@ -3,7 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (ListView,
     DetailView,
     CreateView,
-    UpdateView)
+    UpdateView,
+    DeleteView,
+    )
 from .models import Post #the dot means the file is in the current folder
 
 #view.home ran from urls.py in blog folder.
@@ -118,6 +120,36 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         """
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+    def test_func(self):
+        """
+        input:
+            get_object(): This is selecting the post we are updating
+
+        output:
+        """
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    arg:
+        LoginRequiredMixin: This will require a user to be logged in to be able to make a post. If a user isn't logged it, the page will redirect to login page
+        UserPassesTestMixin: This will allow only the logged in user to edit their post.
+        DetailView: inherted from django.
+    input:
+        model: This is accessing the post data
+        success_url: Once post is deleted, it will redirect to the homepage
+        (it's name is '/' or '', as defined in urls.py)
+
+    output:
+        Display individual post when clicked. This data is routed into
+        template post_detail.html which is dynamically populating the post
+    """
+    model = Post
+    success_url = '/'
 
     def test_func(self):
         """

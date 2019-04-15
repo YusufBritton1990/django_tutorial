@@ -3,6 +3,7 @@ from .views import (PostListView,
     PostDetailView,
     PostCreateView,
     PostUpdateView,
+    PostDeleteView,
     )
 from . import views #. is for the current directory
 
@@ -26,8 +27,12 @@ on that individual post
 post-create: Generate a new field
     convention: <app>/<model>_<form>.html, example: blog/post/1/.html
 
-post-update: update a profile
+post-update: update a post
     It will use the post template to update the post.
+    convention: <app>/<model>_<form>.html, example: blog/post/1/update.html
+
+post-delete: delete a post
+    It will use the post_confirm_delete template to update the post.
     convention: <app>/<model>_<form>.html, example: blog/post/1/update.html
 
 blog-about: routes to about page using views.about function
@@ -36,7 +41,8 @@ urlpatterns = [
     path('', PostListView.as_view(), name='blog-home'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
-    path('post/<int:pk>/update', PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
     path('about/', views.about, name='blog-about'),
 ]
 

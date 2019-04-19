@@ -34,7 +34,11 @@ class PostListView(ListView):
         this will loop over all the post information
 
         ordering: this will show the most recent post at the top of a page.
-        Note: if you want to do newest to oldest, put minus sign
+            Note: if you want to do newest to oldest, put minus sign
+
+        paginate_by: Will display this amount of post on a page at a time
+            Note: using this input, is_paginated exist amd can use
+            page_obj in templates
     output:
         Displays posts on blog site, showing the most recent first
     """
@@ -42,6 +46,7 @@ class PostListView(ListView):
     template_name = 'blog/home.html' # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ["-date_posted"]
+    paginate_by = 3
 
 class PostDetailView(DetailView):
     """

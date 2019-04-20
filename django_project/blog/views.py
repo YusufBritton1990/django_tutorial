@@ -1,5 +1,6 @@
-from django.shortcuts import render #This directs to <root>/templates
+from django.shortcuts import render, get_object_or_404 #This directs to <root>/templates
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.views.generic import (ListView,
     DetailView,
     CreateView,
@@ -46,7 +47,47 @@ class PostListView(ListView):
     template_name = 'blog/home.html' # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
     ordering = ["-date_posted"]
-    paginate_by = 3
+    paginate_by = 5
+
+class UserPostListView(ListView):
+    """
+    arg:
+        ListView: inherted from django.
+    input:
+        model: This is accessing the post data
+
+        template_name: This is directing the post data to the home page as its
+        template
+
+        context_object_name: this is setting the variable to be called "posts"
+        this will loop over all the post information
+
+        paginate_by: Will display this amount of post on a page at a time
+            Note: using this input, is_paginated exist amd can use
+            page_obj in templates
+
+        get_query_set:
+            overwritting the query to either show posts by user or a 404 error.
+    output:
+        Displays posts on blog site, showing the most recent first
+    """
+    model = Post
+    template_name = 'blog/user_posts.html' # <app>/<model>_<viewtype>.html
+    context_object_name = 'posts'
+    paginate_by = 5
+
+    def get_query_set(self):
+        """
+        input:
+            get_object_or_404: show posts by user or a 404 error
+                User: gets the User that is registered in django
+                username: from kwargs, it will get the username from the URL
+
+        output:
+            a list of post, in descending order, from a user
+        """
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user).ordery_by('-date_posted')
 
 class PostDetailView(DetailView):
     """

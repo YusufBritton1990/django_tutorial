@@ -141,3 +141,12 @@ LOGIN_REDIRECT_URL = 'blog-home'
 # If user attempts to view the profile link without login, they will be
 # redirect to login, based on login_required decorator in user>urls.py
 LOGIN_URL = 'login'
+
+# Using Django default constant to setup back end
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# EMAIL_USER and EMAIL_PASS set in local computer's enviroment variables
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')

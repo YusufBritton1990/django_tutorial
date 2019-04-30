@@ -25,7 +25,7 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-    def save(self):
+    def save(self, *args, **kwargs):
         """
         args:
             self: class self parameter, targets the data
@@ -36,7 +36,7 @@ class Profile(models.Model):
         output:
             edited save function for profile pics that will resize big images
         """
-        super().save()
+        super().save(*args, **kwargs)
 
         img = Image.open(self.image.path)
 

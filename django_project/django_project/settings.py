@@ -162,3 +162,5 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')#From AWS sit
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None #causes isses if not set. in current version, might not have to do this
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_S3_REGION_NAME = "us-east-2" #set so images can be viewed.
+# https://docs.aws.amazon.com/general/latest/gr/rande.html

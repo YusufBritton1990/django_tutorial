@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -120,6 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Path where media will be saved. os.path.join will create the correct path
@@ -150,3 +152,16 @@ EMAIL_USE_TLS = True
 # EMAIL_USER and EMAIL_PASS set in local computer's enviroment variables
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+# AWS credentials
+#documentation https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID') #From AWS site
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY') #From AWS site
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')#From AWS site
+#by seeting to false, if a user uploads a file with the same name, it
+#will not overwrite the prior file
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None #causes isses if not set. in current version, might not have to do this
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_S3_REGION_NAME = "us-east-2" #set so images can be viewed.
+# https://docs.aws.amazon.com/general/latest/gr/rande.html

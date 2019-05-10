@@ -25,22 +25,25 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-    def save(self, *args, **kwargs):
-        """
-        args:
-            self: class self parameter, targets the data
-        input:
-            super().save(): uses the save global variable, which save data into
-            the database
-            img: store the instance of the image path
-        output:
-            edited save function for profile pics that will resize big images
-        """
-        super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+    # # Since we are using AWS in production, commenting out photo resizing as
+    # # it will mess up in AWS
+    # def save(self, *args, **kwargs):
+    #     """
+    #     args:
+    #         self: class self parameter, targets the data
+    #     input:
+    #         super().save(): uses the save global variable, which save data into
+    #         the database
+    #         img: store the instance of the image path
+    #     output:
+    #         edited save function for profile pics that will resize big images
+    #     """
+        # super().save(*args, **kwargs)
+        #
+        # img = Image.open(self.image.path)
+        #
+        # if img.height > 300 or img.width > 300:
+        #     output_size = (300, 300)
+        #     img.thumbnail(output_size)
+        #     img.save(self.image.path)
